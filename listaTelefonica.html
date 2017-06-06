@@ -26,36 +26,42 @@
 		angular.module("listaTelefonica",[]);//cria modulo
 
 		//controlador
-		angular.module("listaTelefonica").controller("listaTelefonicaCtrl", function($scope){
+		angular.module("listaTelefonica").controller("listaTelefonicaCtrl", function($scope, $http){
 			$scope.app = "Lista Telefônica"
-			$scope.contatos = [
-				//{nome:"Costelinha", telefone:"2222-2222"},
-				//{nome:"Nubis", telefone:"3333-3333"},
-				//{nome:"AlexaLins", telefone:"1111-1111"}
-				
-			];
-			$scope.operadoras = [
-				{nome:"Oi", codigo: 11},
-				{nome:"Vivo", codigo: 12},
-				{nome:"Tim", codigo: 13},
-				{nome:"Claro", codigo: 14}
-			]
+			$scope.contatos = [];
+			$scope.operadoras = [];
 			$scope.cores = [
 				{nome:"Vermelho", valor:"red"},
 				{nome:"Azul", valor:"blue"},
 				{nome:"Amarelo", valor:"yellow"},
 				{nome:"Verde",valor:"green"}
 			]
+
+			//carregando do node
+			var carregarContatos = function(){
+				$http.get('http://localhost:3412/contatos').success(function(data){
+					$scope.contatos = data;
+				});
+			};
+
+			var carregarOperadoras = function(){
+				$http.get('http://localhost:3412/operadoras').success(function(data){
+					$scope.operadoras = data;
+				});
+			};
 			
 			//salvando contato
 			$scope.adicionarContato = function(contato){
-				$scope.contatos.push(contato);
-				delete $scope.contato;
+				$http.post('http://localhost:3412/contatos', contato).success(function(data){
+					delete $scope.contato;
+					$scope.contatoForm.$setPristine();
+					carregarContatos();
+				});
 			};
 
 			//apagando contato
 			$scope.apagarContatos = function(contatos){
-				$scope.contatos = contatos.filter(function(contato){
+				$scope.contatos = contatos.filter(function(contatos){
 					if (!contato.selecionado) return contato;
 				});
 			};
@@ -72,6 +78,9 @@
 				$scope.criterioDeOrdenacao = campo;
 				$scope.direcaoDaOrdenacao = !$scope.direcaoDaOrdenacao;
 			};
+
+			carregarContatos();
+			carregarOperadoras();
 		});
 	</script>
 </head>
@@ -85,14 +94,13 @@
 				<th><a href="" ng-Click="ordenarPor('nome')">Nome</a></th>
 				<th><a href="" ng-Click="ordenarPor('operadora.nome')">Operadora</a></th>
 				<th><a href="" ng-Click="ordenarPor('telefone')">Telefone</a></th>
-				<th><a href="" ng-Click="ordenarPor('cor.nome')">Cor</a></th>
 			</tr>
 			<tr ng-class="{selecionado: contato.selecionado}" ng-repeat="contato in contatos | filter: criterioDeBusca | orderBy: criterioDeOrdenacao:direcaoDaOrdenacao"><!--Vai repetir-->
 				<td><input type="checkbox" ng-model="contato.selecionado"/></td>
 				<td>{{contato.nome}}</td>
 				<td>{{contato.operadora.nome}}</td>
 				<td>{{contato.telefone}}</td>
-				<td><div style="width: 20px; height: 20px;" ng-style="{'background-color': contato.cor.valor}"></div></td>
+				<!--<td><div style="width: 20px; height: 20px;" ng-style="{'background-color': contato.cor.valor}"></div></td>-->
 			</tr>
 		</table>
 		<hr/>
@@ -103,9 +111,9 @@
 			<select class="form-control" ng-model="contato.operadora" ng-options="operadora.nome for operadora in operadoras | orderBy:'nome'" ng-required="true">
 				<option value="">Selecione uma operadora</option>
 			</select>
-			<select class="form-control" ng-model="contato.cor" ng-options="cor.nome for cor in cores | orderBy:'nome'" ng-required="true">
+			<!--<select class="form-control" ng-model="contato.cor" ng-options="cor.nome for cor in cores | orderBy:'nome'" ng-required="true">
 				<option value="">Selecione uma cor</option>
-			</select>
+			</select>-->
 		</form>
 		<div ng-show="contatoForm.$invalid" class="alert alert-danger">
 			Por favor, preencha todos os campos corretamente!
