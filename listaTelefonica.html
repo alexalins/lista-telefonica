@@ -30,51 +30,41 @@
 			$scope.app = "Lista Telefônica"
 			$scope.contatos = [];
 			$scope.operadoras = [];
-			$scope.cores = [
-				{nome:"Vermelho", valor:"red"},
-				{nome:"Azul", valor:"blue"},
-				{nome:"Amarelo", valor:"yellow"},
-				{nome:"Verde",valor:"green"}
-			]
-
-			//carregando do node
-			var carregarContatos = function(){
-				$http.get('http://localhost:3412/contatos').success(function(data){
+			var carregarContatos = function () {
+				$http.get("http://localhost:3000/contatos").success(function (data) {
 					$scope.contatos = data;
+				}).error(function (data, status) {
+					$scope.message = "Aconteceu um problema: " + data;
 				});
 			};
 
-			var carregarOperadoras = function(){
-				$http.get('http://localhost:3412/operadoras').success(function(data){
+			var carregarOperadoras = function () {
+				$http.get("http://localhost:3000/operadoras").success(function (data) {
 					$scope.operadoras = data;
 				});
 			};
-			
-			//salvando contato
-			$scope.adicionarContato = function(contato){
-				$http.post('http://localhost:3412/contatos', contato).success(function(data){
+
+			$scope.adicionarContato = function (contato) {
+				$http.post("http://localhost:3000/contatos", contato).success(function (data) {
 					delete $scope.contato;
 					$scope.contatoForm.$setPristine();
 					carregarContatos();
 				});
 			};
 
-			//apagando contato
-			$scope.apagarContatos = function(contatos){
-				$scope.contatos = contatos.filter(function(contatos){
+			$scope.apagarContatos = function (contatos) {
+				$scope.contatos = contatos.filter(function (contato) {
 					if (!contato.selecionado) return contato;
 				});
 			};
 
-			//verificando se tem contato selecionado
-			$scope.isContatoSelecionado = function(contatos){
-				return  contatos.some(function(contato){
+			$scope.isContatoSelecionado = function (contatos) {
+				return contatos.some(function (contato) {
 					return contato.selecionado;
 				});
 			};
 
-			//filtrando
-			$scope.ordenarPor = function(campo){
+			$scope.ordenarPor = function (campo) {
 				$scope.criterioDeOrdenacao = campo;
 				$scope.direcaoDaOrdenacao = !$scope.direcaoDaOrdenacao;
 			};
@@ -88,15 +78,15 @@
 	<div class = "jumbotron">
 		<h3><strong>{{app}}</strong></h3><!--nome que definir na app-->
 		<input class="form-control" type="text" ng-model="criterioDeBusca" placeholder="Buscar"/>
-		<table ng-show="contatos.length > 0" class = "table">
+		<table ng-show="contatos.length > 0" class = "table table-striped">
 			<tr>
-				<th></th>
+				<!--<th></th>-->
 				<th><a href="" ng-Click="ordenarPor('nome')">Nome</a></th>
 				<th><a href="" ng-Click="ordenarPor('operadora.nome')">Operadora</a></th>
 				<th><a href="" ng-Click="ordenarPor('telefone')">Telefone</a></th>
 			</tr>
-			<tr ng-class="{selecionado: contato.selecionado}" ng-repeat="contato in contatos | filter: criterioDeBusca | orderBy: criterioDeOrdenacao:direcaoDaOrdenacao"><!--Vai repetir-->
-				<td><input type="checkbox" ng-model="contato.selecionado"/></td>
+			<tr ng-class="{selecionado: contato.selecionado}" ng-repeat="contato in contatos | filter: criterioDeBusca | orderBy: criterioDeOrdenacao:direcaoDaOrdenacao track by $index"><!--Vai repetir-->
+				<!--<td><input type="checkbox" ng-model="contato.selecionado"/></td>-->
 				<td>{{contato.nome}}</td>
 				<td>{{contato.operadora.nome}}</td>
 				<td>{{contato.telefone}}</td>

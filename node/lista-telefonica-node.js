@@ -1,29 +1,41 @@
-var router = require('./router');
+var express = require('express'),
+app = express();
 
-var app = router(3412);
+app.use(express.static(__dirname + '/public'));
+app.use(express.bodyParser());
 
 var operadoras = [
-	{nome:"Oi", codigo: 11},
-	{nome:"Vivo", codigo: 12},
-	{nome:"Tim", codigo: 13},
-	{nome:"Claro", codigo: 14}
+  {nome:"Oi", codigo: 11},
+  {nome:"Vivo", codigo: 12},
+  {nome:"Tim", codigo: 13},
+  {nome:"Claro", codigo: 14}
 ]
 var contatos = [
-	{nome:"Costelinha", telefone:"2222-2222", operadora:operadoras[0]},
-	{nome:"Nubis", telefone:"3333-3333",operadora:operadoras[2]},
-	{nome:"AlexaLins", telefone:"1111-1111",operadora:operadoras[1]}
+  {nome:"Costelinha", telefone:"2222-2222", operadora:operadoras[0]},
+  {nome:"Nubis", telefone:"3333-3333",operadora:operadoras[2]},
+  {nome:"AlexaLins", telefone:"1111-1111",operadora:operadoras[1]}
 ];
 
-app.get('/operadoras', function(req, res){
-	res.write(JSON.stringify(operadoras));
-	res.end();
+app.all('*', function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
 });
 
-app.get('/contatos', function(req, res){
-	res.write(JSON.stringify(contatos));
-	res.end();
+app.get('/contatos', function(req, res) {
+  res.json(contatos);
 });
 
-app.post('/contatos', function(req, res){
-	res.end();
+app.post('/contatos', function(req, res) {
+  contatos.push(req.body);
+  res.json(true);
 });
+
+app.get('/operadoras', function(req, res) {
+  res.json(operadoras);
+});
+
+
+var server = app.listen(3000);
+console.log('Servidor Express iniciado na porta %s', server.address().port);
