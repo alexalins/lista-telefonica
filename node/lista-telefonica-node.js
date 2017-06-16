@@ -11,9 +11,9 @@ var operadoras = [
   {nome:"Claro", codigo: 14}
 ]
 var contatos = [
-  {nome:"Costelinha", telefone:"2222-2222", operadora:operadoras[0]},
-  {nome:"Nubis", telefone:"3333-3333",operadora:operadoras[2]},
-  {nome:"AlexaLins", telefone:"1111-1111",operadora:operadoras[1]}
+  {nome:"costelinha", telefone:"2222-2222", operadora:operadoras[0]},
+  {nome:"nubis", telefone:"3333-3333",operadora:operadoras[2]},
+  {nome:"alexaLins", telefone:"1111-1111",operadora:operadoras[1]}
 ];
 
 app.all('*', function(req, res, next) {
