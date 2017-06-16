@@ -10,7 +10,7 @@
 	<script src="js/app.js"></script>
 	<script src="js/controller/controlador.js"></script>
 	<script src="js/filtro/nomeFilter.js"></script>
-	<script type="js/directives/uiAlert.js"></script>
+	<script src="js/directives/uiAlertDirective.js"></script>
 		
 </head>
 <body ng-controller = "listaTelefonicaCtrl" ><!-- Controlador onde vai mostrar -->
@@ -18,9 +18,9 @@
 		<h3><strong>{{app}}</strong></h3><!--nome que definir na app-->
 
 		<!--erro-->
-		<ui-alert title="Ops, aconteceu um problema!">
+		<div uialert>
 			{{error}}
-		</ui-alert>
+		</div>
 
 		<input class="form-control" type="text" ng-model="criterioDeBusca" placeholder="Buscar"/>
 		<table ng-show="contatos.length > 0" class = "table table-striped">
