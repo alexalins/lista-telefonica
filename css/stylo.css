@@ -1,0 +1,16 @@
+.jumbotron{
+width: 400px;
+text-align: center;
+margin-left: auto;
+margin-right: auto;
+}
+.table{
+margin-top: 20px; 
+}
+
+.selecionado{
+background-color: yellow; 
+}
+body{
+	background-image: url("../img/lista.jpg");
+}
