@@ -3,17 +3,25 @@
 	<meta charset="utf-8">
 	<title>Lista telefonica</title>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.css"> 
-	<link rel="stylesheet" type="text/css" href="css/stylo.css"> 
+	<link rel="stylesheet" type="text/css" href="css/stylo.css">
+	<link rel="stylesheet" type="text/css" href="css/error.css"> 
 
 	<script src="js/angular.js"></script>
 	<script src="js/app.js"></script>
-	<script src="js/controller/controlador.js"></script>	
+	<script src="js/controller/controlador.js"></script>
 	<script src="js/filtro/nomeFilter.js"></script>
+	<script type="js/directives/uiAlert.js"></script>
 		
 </head>
 <body ng-controller = "listaTelefonicaCtrl" ><!-- Controlador onde vai mostrar -->
 	<div class = "jumbotron">
 		<h3><strong>{{app}}</strong></h3><!--nome que definir na app-->
+
+		<!--erro-->
+		<ui-alert title="Ops, aconteceu um problema!">
+			{{error}}
+		</ui-alert>
+
 		<input class="form-control" type="text" ng-model="criterioDeBusca" placeholder="Buscar"/>
 		<table ng-show="contatos.length > 0" class = "table table-striped">
 			<tr>

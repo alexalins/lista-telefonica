@@ -3,11 +3,12 @@ angular.module("listaTelefonica").controller("listaTelefonicaCtrl", function($sc
 	$scope.app = "Lista Telefônica"
 	$scope.contatos = [];
 	$scope.operadoras = [];
+
 	var carregarContatos = function () {
 		$http.get("http://localhost:3000/contatos").success(function (data) {
 			$scope.contatos = data;
 		}).error(function (data, status) {
-			$scope.message = "Aconteceu um problema: " + data;
+			$scope.error = "Não foi possivel carregar os dados!"
 		});
 	};
 
