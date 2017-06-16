@@ -12,5 +12,6 @@ margin-top: 20px;
 background-color: yellow; 
 }
 body{
-	background-image: url("../img/lista.jpg");
+	/*background-image: url("../img/lista.jpg");*/
+	background-color: #8B0000;
 }
